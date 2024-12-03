@@ -292,6 +292,135 @@ const ui = SwaggerUIBundle({
         }
       }
     },
+    "/themes/search": {
+      "get": {
+        "tags": ["Theme"],
+        "summary": "以關鍵字搜尋主題",
+        "description": "根據關鍵字搜尋主題並回傳該主題的基本資訊",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "搜尋的關鍵字",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "搜尋結果成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Theme"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/{articleId}/themes": {
+      "get": {
+        "tags": ["Theme"],
+        "summary": "取得 id 所對應到文章詳細內容",
+        "description": "根據 ID 取得文章詳細內容（定義與提及該主題的文章）",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "文章的 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取得文章詳細內容",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/themes": {
+      "post": {
+        "tags": ["Theme"],
+        "summary": "新增主題",
+        "description": "新增一個主題",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Theme"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "成功新增主題"
+          }
+        }
+      }
+    },
+    "/themes/{themeId}": {
+      "put": {
+        "tags": ["Theme"],
+        "summary": "更新主題內容",
+        "description": "根據 ID 更新主題內容",
+        "parameters": [
+          {
+            "name": "themeId",
+            "in": "path",
+            "description": "主題的 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "theme_name": {
+                    "type": "string"
+                  },
+                  "definition": {
+                    "type": "string"
+                  }
+                },
+                "required": ["theme_name", "definition"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功更新主題內容"
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
@@ -426,9 +555,16 @@ const ui = SwaggerUIBundle({
         "description": "Find out more",
         "url": "http://swagger.io"
       }
+    },
+    {
+      "name": "Theme",
+      "description": "主題相關的 API",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
     }
   ]
-  
 })
 // End Swagger UI call region
 
