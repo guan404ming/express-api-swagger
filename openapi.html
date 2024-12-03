@@ -59,6 +59,7 @@ const ui = SwaggerUIBundle({
   "paths": {
     "/articles/search": {
       "get": {
+        "tags": ["Articles"],
         "summary": "以關鍵字搜尋文章",
         "description": "根據關鍵字搜尋文章並回傳基本資訊",
         "parameters": [
@@ -91,6 +92,7 @@ const ui = SwaggerUIBundle({
     },
     "/articles/{articleId}": {
       "get": {
+        "tags": ["Articles"],
         "summary": "取得文章詳細內容與 LLM 分析結果",
         "description": "根據 ID 取得文章詳細內容與 LLM 分析結果",
         "parameters": [
@@ -119,6 +121,7 @@ const ui = SwaggerUIBundle({
         }
       },
       "put": {
+        "tags": ["Articles"],
         "summary": "更新文章的 LLM 分析結果",
         "description": "根據 ID 更新文章的 LLM 分析結果",
         "parameters": [
@@ -158,6 +161,7 @@ const ui = SwaggerUIBundle({
     },
     "/articles": {
       "post": {
+        "tags": ["Articles"],
         "summary": "新增文章",
         "description": "新增一篇文章",
         "requestBody": {
@@ -179,6 +183,7 @@ const ui = SwaggerUIBundle({
     },
     "/articles/upload": {
       "post": {
+        "tags": ["Articles"],
         "summary": "上傳文章",
         "description": "上傳 PDF 格式的文章",
         "requestBody": {
@@ -190,6 +195,99 @@ const ui = SwaggerUIBundle({
         "responses": {
           "201": {
             "description": "成功上傳文章"
+          }
+        }
+      }
+    },
+    "/reports/daily": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "取得每日主流、非主流媒體的報導篇數統計",
+        "description": "返回每日主流與非主流媒體的報導篇數統計",
+        "responses": {
+          "200": {
+            "description": "成功取得報導篇數統計",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mainstream": {
+                      "type": "integer"
+                    },
+                    "non_mainstream": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/themes/top/{n}": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "取得被提及數排名前 N 名的 themes 統計資訊",
+        "description": "返回被提及數排名前 N 名的 themes",
+        "parameters": [
+          {
+            "name": "n",
+            "in": "path",
+            "description": "要取得的主題數量",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取得主題統計資訊",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Theme"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/entities/top/{n}": {
+      "get": {
+        "tags": ["Dashboard"],
+        "summary": "取得被提及數排名前 N 名的 entities 統計資訊",
+        "description": "返回被提及數排名前 N 名的 entities",
+        "parameters": [
+          {
+            "name": "n",
+            "in": "path",
+            "description": "要取得的實體數量",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取得實體統計資訊",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Entity"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -311,7 +409,26 @@ const ui = SwaggerUIBundle({
 		SwaggerUIBundle.plugins.DownloadUrl
 	],
 	layout: "StandaloneLayout",
-	showCommonExtensions: true
+	showCommonExtensions: true,
+  tags:[
+    {
+      "name": "Articles",
+      "description": "文章相關的 API",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Dashboard",
+      "description": "儀表板相關的 API",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ]
+  
 })
 // End Swagger UI call region
 
