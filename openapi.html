@@ -57,55 +57,47 @@ const ui = SwaggerUIBundle({
     }
   ],
   "paths": {
-    "/products": {
+    "/articles/search": {
       "get": {
-        "summary": "Dapatkan daftar produk",
-        "description": "Mendapatkan daftar semua produk yang tersedia",
+        "summary": "以關鍵字搜尋文章",
+        "description": "根據關鍵字搜尋文章並回傳基本資訊",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "搜尋的關鍵字",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Daftar produk berhasil ditemukan",
+            "description": "搜尋結果成功",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Product"
+                    "$ref": "#/components/schemas/Article"
                   }
                 }
               }
             }
           }
         }
-      },
-      "post": {
-        "summary": "Tambah produk baru",
-        "description": "Menambahkan produk baru ke dalam sistem",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Product"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Sukses menambahkan produk"
-          }
-        }
       }
     },
-    "/products/{productId}": {
+    "/articles/{articleId}": {
       "get": {
-        "summary": "Dapatkan detail produk",
-        "description": "Mendapatkan detail produk berdasarkan ID",
+        "summary": "取得文章詳細內容與 LLM 分析結果",
+        "description": "根據 ID 取得文章詳細內容與 LLM 分析結果",
         "parameters": [
           {
-            "name": "productId",
+            "name": "articleId",
             "in": "path",
-            "description": "ID produk yang akan didapatkan",
+            "description": "文章的 ID",
             "required": true,
             "schema": {
               "type": "integer",
@@ -115,11 +107,11 @@ const ui = SwaggerUIBundle({
         ],
         "responses": {
           "200": {
-            "description": "Detail produk berhasil ditemukan",
+            "description": "成功取得文章詳細內容",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Product"
+                  "$ref": "#/components/schemas/Article"
                 }
               }
             }
@@ -127,13 +119,13 @@ const ui = SwaggerUIBundle({
         }
       },
       "put": {
-        "summary": "Perbarui produk",
-        "description": "Memperbarui data produk berdasarkan ID",
+        "summary": "更新文章的 LLM 分析結果",
+        "description": "根據 ID 更新文章的 LLM 分析結果",
         "parameters": [
           {
-            "name": "productId",
+            "name": "articleId",
             "in": "path",
-            "description": "ID produk yang akan diperbarui",
+            "description": "文章的 ID",
             "required": true,
             "schema": {
               "type": "integer",
@@ -146,39 +138,62 @@ const ui = SwaggerUIBundle({
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Product"
+                "type": "object",
+                "properties": {
+                  "analysisResult": {
+                    "type": "string"
+                  }
+                },
+                "required": ["analysisResult"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Sukses memperbarui produk"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Hapus produk",
-        "description": "Hapus produk berdasarkan ID",
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "path",
-            "description": "ID produk yang akan dihapus",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sukses menghapus produk"
+            "description": "成功更新 LLM 分析結果"
           }
         }
       }
-    }
+    },
+    "/articles": {
+      "post": {
+        "summary": "新增文章",
+        "description": "新增一篇文章",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "成功新增文章"
+          }
+        }
+      }
+    },
+    "/articles/upload": {
+      "post": {
+        "summary": "上傳文章",
+        "description": "上傳 PDF 格式的文章",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/pdf": {}
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "成功上傳文章"
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
