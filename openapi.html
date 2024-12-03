@@ -182,26 +182,104 @@ const ui = SwaggerUIBundle({
   },
   "components": {
     "schemas": {
-      "Product": {
+      "Article": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
-            "format": "int64",
-            "example": 1
+            "type": "integer"
           },
-          "name": {
+          "title": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "date": {
             "type": "string",
-            "example": "Kemeja"
+            "format": "date"
           },
-          "price": {
-            "type": "number",
-            "format": "float",
-            "example": 29.99
+          "summary": {
+            "type": "string"
           },
-          "quantity": {
-            "type": "integer",
-            "example": 100
+          "full_text": {
+            "type": "string"
+          },
+          "media_type": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          }
+        }
+      },
+      "Entity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "article_id": {
+            "type": "integer"
+          },
+          "entity_name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "contain_id": {
+            "type": "integer"
+          },
+          "quote": {
+            "type": "string"
+          }
+        }
+      },
+      "Theme": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "theme_name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          }
+        }
+      },
+      "Contains": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "article_id": {
+            "type": "integer"
+          },
+          "theme_id": {
+            "type": "integer"
+          },
+          "reason": {
+            "type": "string"
           }
         }
       }
